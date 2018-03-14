@@ -3,7 +3,7 @@
 
 # Fit the model to all three camps together using Metropolis-Hastings Algorithm
 # estimating common natural history parameters and the proportion symptomatic
-# Model 2b does this with  no watsan effects quantifed using water sources per person covariate, camp specific R0s, camp-specific time of first case but estimating 
+# Model 2b does this with  watsan effects quantifed using water sources per person covariate, camp specific R0s, camp-specific time of first case but estimating 
 # gamma and proportion sympomatic which are the same for all three camps.
 # Assume data follow Negative binomial distribution around predicted means 
 # and use compiled C code to run the ODE model (much faster)
