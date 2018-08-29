@@ -66,21 +66,22 @@ seasonal.transmission.parameter<-function(beta.max, beta.min, phi, t){
 }
 
 
-
 immunisation.event.forv3<-function(t, y,parms){
-  # update state variable for HepEwithVAxmod model
+  #  Ypdate state variable for HepEwithVAxmod model
   #  Here vacc.eff1 is prob of immunity from vaccine after first dose. 
   #  and vacc.eff2 is prob of immunity after having received two dose
   #  Assume that vaccination has no effected on someone on the E, I or R classes so don't need to split these into vaccinated and not
   with(as.list(c(y,parms)),{
    vacc.efficacy.given.prior.vacc<-max(0,(vacc.eff2-vacc.eff1)/(1-vacc.eff1) )# i.e prob of getting immunity given susceptible and previously vaccinated
-   VS <- VS*(1- proportion.to.vaccinate* vacc.efficacy.given.prior.vacc) + SV * (1- vacc.eff1)* proportion.to.vaccinate         # susceptibles in vaccinatable population , who have been vaccinated but are still susceptible
-   RV<-RV+ vacc.eff1*SV*proportion.to.vaccinate + vacc.efficacy.given.prior.vacc*proportion.to.vaccinate*VS
-
-   SV<-SV * (1- proportion.to.vaccinate) # susceptibles in vaccinatable population , not yet vaccinated 
+   newVS <- VS*(1- proportion.to.vaccinate* vacc.efficacy.given.prior.vacc) + SV * (1- vacc.eff1)* proportion.to.vaccinate         # susceptibles in vaccinatable population , who have been vaccinated but are still susceptible
+   newRV<-RV+ vacc.eff1*SV*proportion.to.vaccinate + vacc.efficacy.given.prior.vacc*proportion.to.vaccinate*VS
+   newSV<-SV * (1- proportion.to.vaccinate) # susceptibles in vaccinatable population , not yet vaccinated 
    V2<- V2 + (V1-V2)*proportion.to.vaccinate # number having recieved at least two doses  
    V1<- V1+ (SV +EV +IV +RV+ -V1)* proportion.to.vaccinate # number having receIved at least one dose = no. vaccinatable who have not been vaccinated * proportion of those to vaccinate + number who had previously received at least one dose. 
-    return(c(SNV,SV, ENV,EV,INV, IV,RNV, RV, VS, V1, V2,CumIncNV, CumIncV ))
+   VS<-newVS
+   RV<-newRV
+   SV<-newSV
+   return(c(SNV,SV, ENV,EV,INV, IV,RNV, RV, VS, V1, V2,CumIncNV, CumIncV ))
  })
 }
 
